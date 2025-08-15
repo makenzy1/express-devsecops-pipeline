@@ -1,0 +1,29 @@
+name: Reusable Deploy
+
+on:
+  workflow_call:
+    inputs:
+      webappName:
+        required: true
+        type: string
+      imageTag:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ inputs.webappName }}
+          images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/project2-api:${{ inputs.imageTag }}

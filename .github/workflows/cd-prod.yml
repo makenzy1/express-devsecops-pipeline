@@ -1,0 +1,33 @@
+name: CD - Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageSha:
+        description: "Image SHA to deploy"
+        required: true
+
+env:
+  IMAGE_NAME: project2-api
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Production Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.WEBAPP_NAME_PROD }}
+          images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.imageSha }}
