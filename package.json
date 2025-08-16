@@ -27,6 +27,9 @@
     "cross-spawn": "^7.0.5"
 
   },
+    "overrides": {
+    "cross-spawn": "^7.0.5"
+  },
   "jest": {
     "testEnvironment": "node"
   }
