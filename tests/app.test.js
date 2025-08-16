@@ -9,8 +9,9 @@ describe("API", () => {
   });
 
   it("POST /echo should echo input", async () => {
-    const res = await request(app).post("/echo").send({ input: "hello" });
+    const payload = { msg: "hello professor" };
+    const res = await request(app).post("/echo").send(payload);
     expect(res.statusCode).toBe(200);
-    expect(res.body.echoed).toBe("hello");
+    expect(res.body.echo).toEqual(payload);
   });
 });

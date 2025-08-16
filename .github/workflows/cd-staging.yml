@@ -34,8 +34,12 @@ jobs:
           docker build -t docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
           docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Deploy to Staging Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ secrets.WEBAPP_NAME_STAGING }}
-          images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update --name ${{ secrets.WEBAPP_NAME_STAGING }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --image docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      # - name: Deploy to Staging Web App
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ secrets.WEBAPP_NAME_STAGING }}
+      #     images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}

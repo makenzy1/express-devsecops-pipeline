@@ -26,8 +26,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Production Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ secrets.WEBAPP_NAME_PROD }}
-          images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.imageSha }}
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update --name ${{ secrets.WEBAPP_NAME_PROD }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --image docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      # - name: Deploy to Production Web App
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ secrets.WEBAPP_NAME_PROD }}
+      #     images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.imageSha }}
