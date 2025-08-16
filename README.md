@@ -18,6 +18,7 @@ A production-style sample with:
 - `DOCKERHUB_TOKEN` — Docker Hub Personal Access Token
 - `WEBAPP_NAME_STAGING` — Azure Web App (staging) name
 - `WEBAPP_NAME_PROD` — Azure Web App (prod) name
+- `AZURE_RESOURCE_GROUP` — Azure Resource Group name
 
 ## Quick Start
 1. Create a GitHub repo and upload all files.
